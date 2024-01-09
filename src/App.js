@@ -1,14 +1,12 @@
-
+import Content from "./Content";
+import Footer from "./Footer";
+import Header from "./Header";
 function App() {
-
-  function randomString() {
-    const names = ["One Piece", "Naruto", "DBZ"];
-    const ranNum = Math.floor(Math.random()*3);
-    return names[ranNum];
-  }
   return (
     <div>
-      <p>I like watching  {randomString()}</p>
+      <Header />
+      <Content />
+      <Footer />
     </div>
   );
 }
