@@ -6,7 +6,7 @@ function AddItem({ newItem, setNewItem, handleSubmit }) {
   }
   return (
     <form
-      className="m-auto p-2 rounded-md bg-green-500 flex justify-evenly"
+      className="m-auto p-2 rounded-lg bg-gray-400 flex justify-evenly"
       onSubmit={handleSubmit}
     >
       <input

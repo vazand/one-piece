@@ -3,6 +3,7 @@ import Content from "./Content";
 import Footer from "./Footer";
 import Header from "./Header";
 import { useState } from "react";
+import SearchItems from "./SearchItems";
 function App() {
   const [items, setItems] = useState(
     JSON.parse(localStorage.getItem("todoApp"))
@@ -43,21 +44,29 @@ function App() {
     localStorage.setItem("todoApp", JSON.stringify(listItems));
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <div className="flex flex-col h-screen justify-between">
       <Header title="A TODO APP" />
       <br />
 
       <Content
-        items={items}
+        items={items.filter((itemEle) =>
+          itemEle.item.toLowerCase().includes(search.toLowerCase())
+        )}
         handleChange={handleChange}
         deleteAnItem={deleteAnItem}
       />
-      <AddItem
-        newItem={newItem}
-        setNewItem={setNewItem}
-        handleSubmit={handleSubmit}
-      />
+      <div className="m-auto">
+        <AddItem
+          newItem={newItem}
+          setNewItem={setNewItem}
+          handleSubmit={handleSubmit}
+        />
+        <br />
+        <SearchItems search={search} setSearch={setSearch} />
+      </div>
       <Footer />
     </div>
   );
