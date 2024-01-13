@@ -4,23 +4,9 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { useState } from "react";
 function App() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      checked: false,
-      item: "I like One Piece",
-    },
-    {
-      id: 2,
-      checked: false,
-      item: "I like Naruto",
-    },
-    {
-      id: 3,
-      checked: false,
-      item: "I like Boruto",
-    },
-  ]);
+  const [items, setItems] = useState(
+    JSON.parse(localStorage.getItem("todoApp"))
+  );
 
   function handleChange(idD) {
     console.log(items[idD]);
@@ -51,7 +37,7 @@ function App() {
     // creating Id for new Item
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const addNewItem = { id, checked: false, item };
-    const listItems = [...items, addNewItem ];
+    const listItems = [...items, addNewItem];
     setItems(listItems);
 
     localStorage.setItem("todoApp", JSON.stringify(listItems));
