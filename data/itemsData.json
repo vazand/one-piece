@@ -1,0 +1,14 @@
+{
+  "items": [
+    {"id": 1, "checked": false, "item": "Milk"},
+    {"id": 2, "checked": true, "item": "Eggs"},
+    {"id": 3, "checked": false, "item": "Bread"},
+    {"id": 4, "checked": true, "item": "Bananas"},
+    {"id": 5, "checked": false, "item": "Cereal"},
+    {"id": 6, "checked": true, "item": "Coffee"},
+    {"id": 7, "checked": false, "item": "Chicken"},
+    {"id": 8, "checked": true, "item": "Tomatoes"},
+    {"id": 9, "checked": false, "item": "Pasta"},
+    {"id": 10, "checked": true, "item": "Cheese"}
+  ]
+}

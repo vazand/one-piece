@@ -7,8 +7,8 @@ import ItemsList from "./ItemsList";
 
 function Content({items,handleChange,deleteAnItem}) {
   return (
-    <main className="text-center">
-      {items.length > 0 ? (
+    < >
+      {items.length > 0 ? ( 
         <ItemsList
           items={items}
           handleChange={handleChange}
@@ -19,7 +19,7 @@ function Content({items,handleChange,deleteAnItem}) {
           No Data to show
         </p>
       )}
-    </main>
+    </>
   );
 }
 
