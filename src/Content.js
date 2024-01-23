@@ -8,7 +8,7 @@ import ItemsList from "./ItemsList";
 function Content({items,handleChange,deleteAnItem}) {
   return (
     < >
-      {items.length > 0 ? ( 
+      {items.length  ? ( 
         <ItemsList
           items={items}
           handleChange={handleChange}

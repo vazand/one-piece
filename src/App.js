@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { useEffect, useState } from "react";
 import SearchItems from "./SearchItems";
+import apiRequest from "./apiRequests";
 //import ProjectChallenge from "./ProjectChallenge";
 function App() {
   const API_URL = "http://localhost:3500/items";
@@ -24,7 +25,7 @@ function App() {
 
         //console.log(response);
         const listItems = await response.json();
-        console.log(listItems);
+        console.log(`list of items => ${JSON.stringify(listItems)}`);
         setItems(listItems);
         setFetchError(null);
       } catch (err) {
@@ -38,25 +39,47 @@ function App() {
     // basically setTimeout executes the function after specified millisecond
     setTimeout(() => {
       (async () => await fetchItems())();
-    }, 2000);
+    }, 10);
   }, []);
 
   // useEffect(() => {
   //   JSON.parse(localStorage.getItem("todoApp"));
   // }, []);
 
-  function handleChange(idD) {
+  const handleChange = async (idD) => {
     console.log(items[idD]);
     const latestData = items.map((item) =>
       item.id === idD ? { ...item, checked: !item.checked } : item
     );
-    setItems(() => latestData);
+    console.log(latestData);
+    setItems(latestData);
+    const myItem = latestData.filter((item) => item.id === idD);
+    console.log(`selectedItem is => ${JSON.stringify(myItem[0])}`);
+    const updateOption = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ checked: myItem[0].checked }),
+    };
+    const reqUrl = `${API_URL}/${myItem[0].id}`;
+    const result = await apiRequest(reqUrl, updateOption);
+    if (result) setFetchError(result);
     //localStorage.setItem("todoApp", JSON.stringify(latestData));
-  }
-  function deleteAnItem(dId) {
+  };
+  async function deleteAnItem(dId) {
     const newData = items.filter((item) => item.id !== dId);
     console.log(newData);
     setItems(() => newData);
+
+    const deletOption = { method: 'DELETE' }
+    const reqUrl = `${API_URL}/${dId}`
+
+    const result =await apiRequest(reqUrl, deletOption)
+    if(result) setFetchError(result)
+
+
+
     //localStorage.setItem("todoApp", JSON.stringify(newData));
   }
   function handleSubmit(e) {
@@ -69,14 +92,27 @@ function App() {
     console.log(`Submitted`);
   }
 
-  const addItem = (item) => {
+  const addItem = async (item) => {
     // creating Id for new Item
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const addNewItem = { id, checked: false, item };
     const listItems = [...items, addNewItem];
     setItems(listItems);
 
-    localStorage.setItem("todoApp", JSON.stringify(listItems));
+    //localStorage.setItem("todoApp", JSON.stringify(listItems));
+
+    console.log(listItems)
+    console.log(`addItem listOfItems as JsonStringfy=> ${JSON.stringify(listItems)}`);
+    const postOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addNewItem),
+    };
+
+    const result = await apiRequest(API_URL, postOptions);
+    if (result) setFetchError(result);
   };
 
   return (
@@ -86,17 +122,16 @@ function App() {
 
       <main className="text-center">
         {isLoading && <p>is Loading</p>}
-        {fetchError && <p>{fetchError}</p> }
-        {!isLoading && !fetchError &&
-        <Content
-        items={items.filter((itemEle) =>
-          itemEle.item.toLowerCase().includes(search.toLowerCase())
-          )}
-          handleChange={handleChange}
-          deleteAnItem={deleteAnItem}
+        {fetchError && <p>{fetchError}</p>}
+        {!isLoading && !fetchError && (
+          <Content
+            items={items.filter((itemEle) =>
+              itemEle.item.toLowerCase().includes(search.toLowerCase())
+            )}
+            handleChange={handleChange}
+            deleteAnItem={deleteAnItem}
           />
-        }  
-        
+        )}
       </main>
       <div className="m-auto">
         <AddItem
